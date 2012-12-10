@@ -5,12 +5,11 @@ block content
   p Welcome to #{title}
   p Share your photos with the world
   ul.image-list
-      li#123451 photo 1
-      li#123452 photo 2
-      li#123453 photo 3
-      li#123454 photo 4
-      li#123455 photo 5
+    for image in images
+      li
+          a(href = image.href, id = image._id)= image.title
+          
   div.overlay
       div
           img
-          div.close
+          div.close X
