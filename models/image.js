@@ -9,14 +9,13 @@ if (process.env.NODE_ENV != 'production') {
   process.exit();
 }
 
-var Model = mongoose.model('Image', 
-  new Schema({ title : String, url : String, lat : String, lng : String, createdDate : String, createdAt : String })
-);
+var imageSchema = new Schema({ title : String, href : String, lat : String, lng : String, createdDate : String, createdAt : String })
+var Model = mongoose.model('Image', imageSchema);
 
-var create = function(title, url, lat, lng, createdDate) {
+var create = function(title, href, lat, lng, createdDate) {
   var image = new Model();
   image.title = title;
-  image.url = url;
+  image.href = href;
   image.lat = lat;
   image.lng = lng;
   image.createdDate = createdDate;

@@ -3,13 +3,13 @@ extends layout
 block content
   h1= title
   p Welcome to #{title}
-  p Share your photos with the world
+  p Share your photos with the world, literally!
   ul.image-list
     for image in images
       li
-          a(href = image.href, id = image._id)= image.title
+        a(href = image.href, id = image._id)= image.title
           
   div.overlay
-      div
-          img
-          div.close X
+    div
+      img
+      div.close X
