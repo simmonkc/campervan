@@ -8,6 +8,8 @@ block content
     for image in images
       li
         a(href = image.href, id = image._id)= image.title
+        | &nbsp;
+        a( href = '/images/' + image._id + '/destroy') &#215;
           
   div.overlay
     div

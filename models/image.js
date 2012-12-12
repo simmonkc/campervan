@@ -23,9 +23,23 @@ var create = function(title, href, lat, lng, createdDate) {
   return image;
 };
 
+var destroy = function(_id, callback) {
+  Model.remove({ _id : _id }, function(err) {
+    callback(err);
+  });
+}
+
 var find = function(options, callback) {
   Model.find(options, callback);
 };
 
+var transformExifGPSData = function(gpsCoordinates, gpsCompassRef) { 
+  array = gpsCoordinates.split(', ').map(eval)
+  return ((gpsCompassRef === 'S' || gpsCompassRef === 'E') ? -1 : 1) * 
+    (array[0] + ((array[1] / 60) + (array[2] / 3600) / 100))
+};
+
 exports.create = create;
+exports.destroy = destroy;
 exports.find = find;
+exports.transformExifGPSData = transformExifGPSData;
