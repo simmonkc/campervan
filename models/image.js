@@ -5,11 +5,10 @@ var fs = require('fs')
   , Schema    = mongoose.Schema
   , ObjectId  = mongoose.ObjectId;
 
-if (process.env.NODE_ENV != 'production') {
-  mongoose.connect('mongodb://localhost/campervan');
+if (process.env.NODE_ENV === 'production') {
+  mongoose.connect('mongodb://nodejitsu:1f011a83ab17a799c8e6c8d8c088ef95@linus.mongohq.com:10048')
 } else {
-  console.log('No MongoDB instance yet set up.');
-  process.exit();
+  mongoose.connect('mongodb://localhost/campervan');
 }
 
 var imageSchema = new Schema({ title : String, href : String, lat : String, lng : String, createdDate : String, createdAt : String })
