@@ -2,13 +2,29 @@ extends layout
 
 block content
   h1= title
-  p Welcome to #{title}
-  p Share your photos with the world, literally!
+  div.view map
+  div.view list
   ul.image-list
-    for image in images
-      li
-        a(href = image.href, id = image._id)= image.title
-          
+    li
+      img(src="images/123456.jpg")
+      a Jamming the Invogoration  
+        span 11 Dec 12        
+    li
+      img(src="images/123456.jpg")
+      a Breakfast with flies          
+        span 12 Dec 12        
+    li
+      img(src="images/123456.jpg")
+      a Blue pools = small balls 
+        span 12 Dec 12
+    li
+      img(src="images/123456.jpg")
+      a Cleansing of Lake Wakitipu
+        span 12 Dec 12                   
+    li
+      img(src="images/123456.jpg")
+      a "Of Course I like Venison!"              
+        span 12 Dec 12
   div.overlay
     div
       img
