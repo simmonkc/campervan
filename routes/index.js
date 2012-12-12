@@ -12,7 +12,7 @@ exports.index = index = function(req, res) {
 exports.destroy = function(req, res) {
   image.destroy(req.params.imageId, function(err) {
     if (err) throw new Error(err)
-    else index(req, res);
+    else res.send(200);
   });
 };
 
@@ -26,29 +26,8 @@ exports.admin = function(req, res) {
 };
 
 exports.create = function(req, res) {
-  var handleImageWritten = function(err, img) {
-    img.save(function(err) {
-      if (err) {
-        console.log(err);
-        res.send(500);
-      } else {
-        res.send(200);
-      }
-    });
-  };
-  // todo: this to image model on #create:
-  var handleImageMetaData = function(err, metadata) {
-    var lat = image.transformExifGPSData(metadata.exif.gpsLatitude, metadata.exif.gpsLatitudeRef);
-    var lng = image.transformExifGPSData(metadata.exif.gpsLongitude, metadata.exif.gpsLongitudeRed);
-    var createdDate = new Date(metadata.exif.dateTimeOriginal);
-    img = image.create(req.body.title, 'http://localhost:3000/test/files/', lat, lng, createdDate);
-    if (process.env.NODE_ENV === 'production') {
-      // Upload to S3:
-    } else {
-      fs.rename(req.files.image.path, './test/files/' + img._id + '.jpg', function(err){
-        handleImageWritten(null, img);
-      });
-    }
-  };
-  imagemagick.readMetadata(req.files.image.path, handleImageMetaData);
+  image.create(req.files.image.path, req.params.title, function(err) {
+    if (err) throw new Error(err);
+    else res.send(200);
+  });
 };
