@@ -6,7 +6,7 @@ var fs = require('fs')
   , ObjectId  = mongoose.ObjectId;
 
 if (process.env.NODE_ENV === 'production') {
-  mongoose.connect('mongodb://nodejitsu:1f011a83ab17a799c8e6c8d8c088ef95@linus.mongohq.com:10048')
+  mongoose.connect('mongodb://nodejitsu:1f011a83ab17a799c8e6c8d8c088ef95@linus.mongohq.com:10048/campervan')
 } else {
   mongoose.connect('mongodb://localhost/campervan');
 }
