@@ -1,4 +1,5 @@
 var fs = require('fs')
+  , AWS = require('aws-sdk')
   , imagemagick = require('imagemagick')
   , mongoose  = require('mongoose')
   , Schema    = mongoose.Schema
@@ -24,7 +25,27 @@ var create = function(filePath, title, callback) {
     image.createdDate = new Date(metadata.exif.dateTimeOriginal);
     image.createdAt = new Date().toString();
     if (process.env.NODE_ENV === 'production') {
-      // Upload to S3:
+      AWS.config.loadFromPath(__dirname + '/../amazon-credentials.json');
+      AWS.config.update({region: 'us-east-1'});
+      fs.readFile(filePath, function(err, data) {
+        if (err) {
+          throw new Error(err);
+        } else {
+          var s3 = new AWS.S3();
+          var data = { 
+              Bucket : 'campervan' 
+            , Key : 'images/' + image._id + '.jpg'
+            , Body : data
+            , ACL : 'public-read' 
+          };
+          console.log('uploading to s3...')
+          s3.client.putObject(data).done(function(resp) {
+            // todo: check `resp` to see if an error occurred in the upload
+            console.log(resp)
+            callback(null);
+          });
+        }
+      });
     } else {
       fs.rename(filePath, './test/files/' + image._id + '.jpg', function(err) {
         if (err) { 
