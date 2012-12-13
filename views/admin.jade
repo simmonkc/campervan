@@ -9,3 +9,9 @@ block content
       input(type = 'text', name = 'imageTitle', id = 'imageTitle') 
       br
       input(type = 'submit', value = 'Share Photo')
+    ul
+      for image in images
+        li
+          a(href = image.href)= image.title
+          | &nbsp;
+          a.destroy( href = '/images/' + image._id + '/destroy') &#215;

@@ -2,10 +2,17 @@ var fs = require('fs')
   , imagemagick = require('imagemagick')
   , image = require('../models/image');
 
-exports.index = index = function(req, res) {
+exports.index = function(req, res) {
   image.find({}, function(err, images) {
     if (err) throw new Error(err)
     else res.render('index', { title: 'Campervan', images : JSON.stringify(images) });
+  });
+};
+
+exports.list = function(req, res) {
+  image.find({}, function(err, images) {
+    if (err) throw new Error(err)
+    else res.render('list', { title: 'Campervan', images : JSON.stringify(images) });
   });
 };
 
@@ -22,7 +29,10 @@ exports.show = function(req, res) {
 };
 
 exports.admin = function(req, res) {
-  res.render('admin', { title : 'Campervan Admin' });
+  image.find({}, function(err, images) {
+    if (err) throw new Error(err)
+    else res.render('admin', { title: 'Campervan Admin', images : images });
+  });
 };
 
 exports.create = function(req, res) {

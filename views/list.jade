@@ -1,0 +1,11 @@
+extends layout
+
+block content
+  h1= title
+  div.view map
+  div.view list
+  ul.image-list
+    for image in JSON.parse(images)
+      li
+        a(href = image.href, id = image._id)= image.title
+          span= image.createdDate

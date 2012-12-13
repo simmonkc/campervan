@@ -30,6 +30,7 @@ app.configure('development', function(){
 });
 
 app.get('/', routes.index);
+app.get('/list', routes.list);
 app.get('/admin', routes.admin);
 app.post('/create', routes.create);
 // app.get('/images/:imageId', routes.show);

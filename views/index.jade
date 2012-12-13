@@ -5,17 +5,11 @@ block content
   div.view map
   div.view list
   div#map_canvas
-  ul.image-list
-    for image in JSON.parse(images)
-      li
-        a(href = image.href, id = image._id)= image.title
-          span= image.createdDate
-        | &nbsp;
-        a( href = '/images/' + image._id + '/destroy') &#215;
   div.overlay
     div
       img
       div.close X
+  script(src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD9c9evqyMioCa2gN4CDv6zxgzyX5dZN00&sensor=false")
   script
       function initialize() {
         var mapOptions = {
