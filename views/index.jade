@@ -5,6 +5,7 @@ block content
   div.view map
   div.view list
   ul.image-list
+<<<<<<< HEAD
     li
       img(src="images/123456.jpg")
       a Jamming the Invogoration  
@@ -25,6 +26,14 @@ block content
       img(src="images/123456.jpg")
       a "Of Course I like Venison!"              
         span 12 Dec 12
+=======
+    for image in images
+      li
+        a(href = image.href, id = image._id)= image.title
+        | &nbsp;
+        a( href = '/images/' + image._id + '/destroy') &#215;
+          
+>>>>>>> f7d65d6548ec3a25ac034a479064d279b758e725
   div.overlay
     div
       img
