@@ -6,7 +6,7 @@ var fs = require('fs')
   , ObjectId  = mongoose.ObjectId;
 
 if (process.env.NODE_ENV === 'production') {
-  mongoose.connect('mongodb://nodejitsu:1f011a83ab17a799c8e6c8d8c088ef95@linus.mongohq.com:10048/campervan')
+  mongoose.connect('mongodb://nodejitsu:1f011a83ab17a799c8e6c8d8c088ef95@linus.mongohq.com:10048/nodejitsudb2972390581');
 } else {
   mongoose.connect('mongodb://localhost/campervan');
 }
@@ -24,7 +24,7 @@ var create = function(filePath, title, callback) {
     image.createdDate = new Date(metadata.exif.dateTimeOriginal);
     image.createdAt = new Date().toString();
     if (process.env.NODE_ENV === 'production') {
-      AWS.config.loadFromPath(__dirname + '/../amazon-credentials.json');
+      AWS.config.loadFromPath('amazon-credentials.json');
       AWS.config.update({region: 'us-east-1'});
       fs.readFile(filePath, function(err, data) {
         if (err) {
@@ -46,11 +46,13 @@ var create = function(filePath, title, callback) {
         }
       });
     } else {
-      fs.rename(filePath, './test/files/' + image._id + '.jpg', function(err) {
+      fs.rename(filePath, './public/test/files/' + image._id + '.jpg', function(err) {
         if (err) { 
           throw new Error(err);
         } else {
-          image.href = '/test/files/' + image + '.jpg';
+          console.log('HREF should be: /test/files/' + image._id + '.jpg');
+          image.href = '/test/files/' + image._id + '.jpg';
+          console.log(image.href);
           image.save(function(err) { callback(err) });
         }
         callback(err);

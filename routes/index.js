@@ -5,7 +5,7 @@ var fs = require('fs')
 exports.index = index = function(req, res) {
   image.find({}, function(err, images) {
     if (err) throw new Error(err)
-    else res.render('index', { title: 'Campervan', images : images });
+    else res.render('index', { title: 'Campervan', images : JSON.stringify(images) });
   });
 };
 
@@ -26,6 +26,7 @@ exports.admin = function(req, res) {
 };
 
 exports.create = function(req, res) {
+  console.log('req.params: ' + JSON.stringify(req.params));
   image.create(req.files.image.path, req.params.title, function(err) {
     if (err) throw new Error(err);
     else res.send(200);

@@ -6,7 +6,7 @@ block content
   div.view list
   div#map_canvas
   ul.image-list
-    for image in images
+    for image in JSON.parse(images)
       li
         a(href = image.href, id = image._id)= image.title
           span 12 Dec '12
@@ -16,3 +16,25 @@ block content
     div
       img
       div.close X
+  script
+      function initialize() {
+        var mapOptions = {
+          center: new google.maps.LatLng(-39.282443,174.762331),
+          zoom: 5,
+          mapTypeId: google.maps.MapTypeId.ROADMAP
+        };
+        var map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions);
+        !{images}.forEach(function(image){
+          var marker = new google.maps.Marker({
+            position: new google.maps.LatLng(image.lat, image.lng),
+            map: map,
+            title : image.href
+            });
+          google.maps.event.addListener(marker,'click', function(){
+            $.get(image.href, function(data) {
+              $('.overlay img').attr("src", image.href);
+              $('.overlay').show();
+            });
+          });
+        });
+      }
