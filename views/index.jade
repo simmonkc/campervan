@@ -2,15 +2,16 @@ extends layout
 
 block content
   h1= title
-  p Welcome to #{title}
-  p Share your photos with the world, literally!
+  div.view map
+  div.view list
+  div#map_canvas
   ul.image-list
     for image in images
       li
         a(href = image.href, id = image._id)= image.title
+          span 12 Dec '12
         | &nbsp;
         a( href = '/images/' + image._id + '/destroy') &#215;
-          
   div.overlay
     div
       img

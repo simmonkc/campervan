@@ -3,7 +3,10 @@ html
   head
     title= title
     link(rel='stylesheet', href='/stylesheets/style.css')
-  body
-    block content
+    script(src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD9c9evqyMioCa2gN4CDv6zxgzyX5dZN00&sensor=false")
+    script(src="javascripts/map.js")
+  body(onload = 'initialize()')
+    div.wrapper
+      block content
     script(src="javascripts/zepto.min.js")
     script(src="javascripts/script.js")
