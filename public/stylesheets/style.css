@@ -156,3 +156,8 @@ ul{
   float: right;
   margin: 3px 5% 0 0;
  }
+ #map_canvas{
+   height: 500px;
+   width:100%;
+   float: left;
+ }
