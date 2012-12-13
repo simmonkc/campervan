@@ -14,11 +14,15 @@ if (process.env.NODE_ENV === 'production') {
 var imageSchema = new Schema({ title : String, href : String, lat : String, lng : String, createdDate : String, createdAt : String })
 var Model = mongoose.model('Image', imageSchema);
 
-var create = function(filePath, title, callback) {
+var create = function(filePath, imageTitle, callback) {
   
   var handleImageMetaData = function(err, metadata) {
     var image = new Model();
-    image.title = title;
+    image.title = imageTitle;
+    if (metadata.exif.gpsLatitude === undefined || metadata.exif.gpsLongitude === undefined ) {
+      callback('No GPS metadata');
+      return;
+    }
     image.lat = transformExifGPSData(metadata.exif.gpsLatitude, metadata.exif.gpsLatitudeRef);
     image.lng = transformExifGPSData(metadata.exif.gpsLongitude, metadata.exif.gpsLongitudeRed);
     image.createdDate = new Date(metadata.exif.dateTimeOriginal);
@@ -37,7 +41,6 @@ var create = function(filePath, title, callback) {
             , Body : data
             , ACL : 'public-read' 
           };
-          console.log('uploading to s3...')
           s3.client.putObject(data).done(function(resp) {
             // todo: check `resp` to see if an error occurred in the upload
             console.log(resp)
@@ -50,7 +53,6 @@ var create = function(filePath, title, callback) {
         if (err) { 
           throw new Error(err);
         } else {
-          console.log('HREF should be: /test/files/' + image._id + '.jpg');
           image.href = '/test/files/' + image._id + '.jpg';
           console.log(image.href);
           image.save(function(err) { callback(err) });

@@ -9,7 +9,7 @@ block content
     for image in JSON.parse(images)
       li
         a(href = image.href, id = image._id)= image.title
-          span 12 Dec '12
+          span= image.createdDate
         | &nbsp;
         a( href = '/images/' + image._id + '/destroy') &#215;
   div.overlay
