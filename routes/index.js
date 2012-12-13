@@ -10,7 +10,7 @@ exports.index = function(req, res) {
 };
 
 exports.list = function(req, res) {
-  image.find({}, function(err, images) {
+  image.sort('-createdDate', function(err, images) {
     if (err) throw new Error(err)
     else res.render('list', { title: 'Campervan', images : JSON.stringify(images) });
   });
@@ -36,7 +36,6 @@ exports.admin = function(req, res) {
 };
 
 exports.create = function(req, res) {
-  console.log('req.params: ' + req.body.imageTitle);
   image.create(req.files.image.path, req.body.imageTitle, function(err) {
     if (err) res.send('The image has no GPS data and cannot be added to campervan.'); //throw new Error(err);
     else res.send(200);

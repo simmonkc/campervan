@@ -11,7 +11,7 @@ if (process.env.NODE_ENV === 'production') {
   mongoose.connect('mongodb://localhost/campervan');
 }
 
-var imageSchema = new Schema({ title : String, href : String, lat : String, lng : String, createdDate : String, createdAt : String })
+var imageSchema = new Schema({ title : String, href : String, lat : String, lng : String, createdDate : Date, createdAt : Date })
 var Model = mongoose.model('Image', imageSchema);
 
 var create = function(filePath, imageTitle, callback) {
@@ -26,7 +26,7 @@ var create = function(filePath, imageTitle, callback) {
     image.lat = transformExifGPSData(metadata.exif.gpsLatitude, metadata.exif.gpsLatitudeRef);
     image.lng = transformExifGPSData(metadata.exif.gpsLongitude, metadata.exif.gpsLongitudeRed);
     image.createdDate = new Date(metadata.exif.dateTimeOriginal);
-    image.createdAt = new Date().toString();
+    image.createdAt = new Date();
     if (process.env.NODE_ENV === 'production') {
       AWS.config.loadFromPath('amazon-credentials.json');
       AWS.config.update({region: 'us-east-1'});
@@ -74,6 +74,10 @@ var find = function(options, callback) {
   Model.find(options, callback);
 };
 
+var sort = function(sortQuery, callback) {
+  Model.find({}).sort('field ' + sortQuery).exec(callback);
+};
+
 var transformExifGPSData = function(gpsCoordinates, gpsCompassRef) { 
   array = gpsCoordinates.split(', ').map(eval)
   return ((gpsCompassRef === 'S' || gpsCompassRef === 'E') ? -1 : 1) * 
@@ -83,3 +87,4 @@ var transformExifGPSData = function(gpsCoordinates, gpsCompassRef) {
 exports.create = create;
 exports.destroy = destroy;
 exports.find = find;
+exports.sort = sort;
