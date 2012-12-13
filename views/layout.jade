@@ -5,6 +5,9 @@ html
     link(rel='stylesheet', href='/stylesheets/style.css')
   body(onload = 'initialize()')
     div.wrapper
+      h1= title
+      a.view(href = '/') map
+      a.view(href = '/list') list
       block content
     script(src="javascripts/zepto.min.js")
     script(src="javascripts/script.js")
