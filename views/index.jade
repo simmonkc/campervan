@@ -7,6 +7,7 @@ block content
       img
       div.close X
   script(src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD9c9evqyMioCa2gN4CDv6zxgzyX5dZN00&sensor=false")
+  script(src="/javascripts/gmaps-markerclusterer.js")
   script
       function initialize() {
         var mapOptions = {
@@ -15,17 +16,20 @@ block content
           mapTypeId: google.maps.MapTypeId.ROADMAP
         };
         var map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions);
+        var markers = [];
         !{images}.forEach(function(image){
-          var marker = new google.maps.Marker({
-            position: new google.maps.LatLng(image.lat, image.lng),
-            map: map,
-            title : image.href
+            var marker = new google.maps.Marker({
+              position: new google.maps.LatLng(image.lat, image.lng),
+              map: map,
+              title : image.href
+              });
+            google.maps.event.addListener(marker,'click', function(){
+              $.get(image.href, function(data) {
+                $('.overlay img').attr("src", image.href);
+                $('.overlay').show();
+              });
             });
-          google.maps.event.addListener(marker,'click', function(){
-            $.get(image.href, function(data) {
-              $('.overlay img').attr("src", image.href);
-              $('.overlay').show();
-            });
-          });
+          markers.push(marker);
         });
+        var markerCluster = new MarkerClusterer(map, markers, { maxZoom: 10 });
       }
