@@ -29,7 +29,8 @@ block content
               title : image.imageTitle
               });
             google.maps.event.addListener(marker,'click', function(){
-              loadSelectedImage(image.href);
+              $('body').trigger('loadSelectedImage', image.href);
+              //loadSelectedImage(image.href);
             });
           markers.push(marker);
         });
