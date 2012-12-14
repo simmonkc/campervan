@@ -10,37 +10,13 @@ block content
           img
       
   ul.image-list
+    - day = null
     for image in JSON.parse(images)
+      - date = new Date(image.createdDate)
+      if day === null || day < new Date(date.getYear(), date.getMonth(), date.getDay()).getTime()
+        h1.day #{date.toDateString()}
+        - day = new Date(date.getYear(), date.getMonth(), date.getDay()).getTime()
       li
         a(href = image.href, id = image._id)
-          div 12:39pm
-          h2= image.title
-  h1.day  Wednesday, Dec 12th, 2012          
-  ul.image-list
-      li
-        a(href = 'http://localhost:3000/images/12346.jpg')
-          div 8:42 am
-          h2 Jamming the zone &raquo;
-      li
-        a(href = 'http://localhost:3000/images/12346.jpg')
-          div 12:39 pm
-          h2 you like venison? &raquo;
-      li
-        a(href = 'http://localhost:3000/images/12346.jpg')
-          div 3:13 pm
-          h2 $200 of groceries &raquo;
-          
-  h1.day  Thursday, Dec 13th, 2012          
-  ul.image-list
-      li
-        a(href = 'http://localhost:3000/images/12345.jpg')
-          div 10:06 am
-          h2 Jamming the zone &raquo;
-      li
-        a(href = 'http://localhost:3000/images/12345.jpg')
-          div 11:39 am
-          h2 you like venison? &raquo;
-      li
-        a(href = 'http://localhost:3000/images/12345.jpg')
-          div 2:17 pm
-          h2 $200 of groceries &raquo;
+          div #{date.toTimeString()}
+          h2 #{image.title} &raquo;
