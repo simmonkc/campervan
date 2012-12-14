@@ -29,6 +29,8 @@ var create = function(filePath, imageTitle, callback) {
     image.createdAt = new Date();
     if (process.env.NODE_ENV === 'production') {
       console.log('application is in production, using AWS...');
+      console.log('accessKeyId: ' + process.env.AWS_KEY);
+      console.log('secretAccessKey: ' + process.env.AWS_SECRET);
       AWS.config.update({ accessKeyId: process.env.AWS_KEY, secretAccessKey: process.env.AWS_SECRET });
       AWS.config.update({ region: 'us-east-1' });
       console.log('copying from filePath: ' + filePath);
