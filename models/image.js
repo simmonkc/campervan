@@ -28,8 +28,10 @@ var create = function(filePath, imageTitle, callback) {
     image.createdDate = new Date(metadata.exif.dateTimeOriginal);
     image.createdAt = new Date();
     if (process.env.NODE_ENV === 'production') {
+      console.log('application is in production, using AWS...');
       AWS.config.update({ accessKeyId: process.env.AWS_KEY, secretAccessKey: process.env.AWS_SECRET });
       AWS.config.update({ region: 'us-east-1' });
+      console.log('copying from filePath: ' + filePath);
       fs.readFile(filePath, function(err, data) {
         if (err) {
           throw new Error(err);
@@ -41,6 +43,7 @@ var create = function(filePath, imageTitle, callback) {
             , Body : data
             , ACL : 'public-read' 
           };
+          console.log('uploading to S3. Waiting for response from AWS...');
           s3.client.putObject(data).done(function(resp) {
             // todo: check `resp` to see if an error occurred in the upload
             console.log(resp)
