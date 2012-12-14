@@ -1,12 +1,10 @@
 extends layout
 
 block content
-    h1= title
-    h2 Upload Photos
     form(method = 'POST', action = '/create', enctype = 'multipart/form-data')
       input(type = 'file', name = 'image', id = 'image')
       br
-      input(type = 'text', name = 'imageTitle', id = 'imageTitle') 
+      input(type = 'text', name = 'imageTitle', id = 'imageTitle', placeholder = 'Add image title here...') 
       br
       input(type = 'submit', value = 'Share Photo')
     ul
