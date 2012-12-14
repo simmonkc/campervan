@@ -10,7 +10,7 @@ exports.index = function(req, res) {
 };
 
 exports.list = function(req, res) {
-  image.sort('-createdDate', function(err, images) {
+  image.sort('createdDate', function(err, images) {
     if (err) throw new Error(err)
     else res.render('list', { title: 'Campervan', images : JSON.stringify(images) });
   });
@@ -18,8 +18,8 @@ exports.list = function(req, res) {
 
 exports.destroy = function(req, res) {
   image.destroy(req.params.imageId, function(err) {
-    if (err) throw new Error(err)
-    else res.send(200);
+    if (err) throw new Error(err);
+    else res.redirect('/admin');
   });
 };
 
@@ -38,6 +38,6 @@ exports.admin = function(req, res) {
 exports.create = function(req, res) {
   image.create(req.files.image.path, req.body.imageTitle, function(err) {
     if (err) res.send('The image has no GPS data and cannot be added to campervan.'); //throw new Error(err);
-    else res.send(200);
+    else res.redirect('/admin');
   });
 };
