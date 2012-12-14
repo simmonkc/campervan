@@ -2,16 +2,16 @@ $(document).ready(function(){
     
 
     
-    var loadSelectedImage = function(id){    
-      var imageURL = 'http://localhost:3000/images/' + id + '.jpg';
+    var loadSelectedImage = function(href){    
       $('.overlay').show();
-      $('.selected-image img').attr("src", imageURL);
+      $('.selected-image img').attr("src", href);
+      $('body').css("overflow-y","hidden");
         
     };
     
-    $('.image-list li a').click(function(){
-        loadSelectedImage($(this).attr("id"));
-        
+    $('.image-list li a').click(function(e){
+        loadSelectedImage($(this).attr("href"));
+        e.preventDefault();        
     });
     
     $('.close').click(function(e){

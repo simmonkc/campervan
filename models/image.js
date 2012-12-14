@@ -28,14 +28,9 @@ var create = function(filePath, imageTitle, callback) {
     image.createdDate = new Date(metadata.exif.dateTimeOriginal);
     image.createdAt = new Date();
     if (process.env.NODE_ENV === 'production') {
-      console.log('application is in production, using AWS...');
-      console.log('accessKeyId: ' + process.env.AWS_KEY);
-      console.log('secretAccessKey: ' + process.env.AWS_SECRET);
       AWS.config.update({ accessKeyId: process.env.AWS_KEY , secretAccessKey: process.env.AWS_SECRET });
       AWS.config.update({ region: 'us-east-1' });
       AWS.config.update({ sslEnabled : false });
-      console.log('AWS.config: ' + JSON.stringify(AWS.config));
-      console.log('copying from filePath: ' + filePath);
       fs.readFile(filePath, function(err, data) {
         if (err) {
           throw new Error(err);
@@ -48,13 +43,7 @@ var create = function(filePath, imageTitle, callback) {
             , ContentType : 'image/jpeg'
             , ACL : 'public-read' 
           };
-          console.log('data is available?' + data);
-          console.log('or there was an error: ' + err);
-          console.log('uploading to S3. Waiting for response from AWS...');
           s3.client.putObject(data, function(err, data) {
-            // todo: check `resp` to see if an error occurred in the upload
-            console.log('aws err: ' + JSON.stringify(err));
-            console.log('aws data: ' + JSON.stringify(data));
             image.href = 'http://campervan.s3.amazonaws.com/images/' + image._id + '.jpg';
             image.save(function(err) { callback(err) });
           });
@@ -66,7 +55,6 @@ var create = function(filePath, imageTitle, callback) {
           throw new Error(err);
         } else {
           image.href = '/test/files/' + image._id + '.jpg';
-          console.log(image.href);
           image.save(function(err) { callback(err) });
         }
         callback(err);
