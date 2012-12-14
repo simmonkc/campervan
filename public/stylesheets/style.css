@@ -1,6 +1,5 @@
 body {
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
-  background-color: #7fff73;
   color:#333333;
 }
 
@@ -31,38 +30,41 @@ h2{
   margin: 0 auto;
 }
 .overlay{
-    display: none;
-    position: absolute;
-    top:0;
-    left: 0;
-    width:100%;
-    height:100%; 
+  display: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, .95);
 }
-.overlay>div{
+.selected-image{
     position: absolute;
-    max-width: 60%;
-    top:10%;
-    left:15%;
-    max-height: 400px;
-    
+    max-width: 100%;
+    height:100%;
 }
 .overlay img{
-    max-width: 100%;
-    max-height: 400px;
+    width: 100%;
 }
-
-.close{
+.toggle-view {
     position: absolute;
-    top: 0;
-    right: 0;
-    height: 20px;
-    width: 20px;
-    background-color: black;
-    color: white;
-    border-radius: 20px;
+    display: block;
+    top: 10px;
+    right: 2.5%;
+    min-width: 75px;
     text-align: center;
-    line-height: 20px;
+    background-color: rgba(256, 256, 256, .5);
+    padding: 5px;
+    border-radius: 10px;
+    border: 2px solid #555;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #333333;
+    text-decoration: none;
     cursor: pointer;
+}
+.overlay .close{
+  z-index: 10;
 }
 form{
   text-align: center;
@@ -107,44 +109,53 @@ input[type="submit"]{
   border: none;
   
 }
+.day{
+  font-size: 16px;
+  color: #333;
+  border-bottom: 1px solid #333;
+  width: 100%;
+  letter-spacing: 0px;
+  margin-bottom: 0;
+  padding-bottom: 3px;
+}
 ul{
   list-style: none;
   padding:0;
   float: left ;
   width :100%;
+  margin: 0 0 10px;
 }
- li{
-   padding: 20px 0 0 5%;
-   width:95%;
-  height: 40px;
-  background-color: #DDD;
-  -moz-border-radius: 10px;
-  -webkit-border-radius: 10px;
-  border-radius: 10px;
-  -moz-box-shadow: 0 2px 0 #4c9434;
-  -webkit-box-shadow: 0 2px 0 #4C9434;
-  box-shadow: 0 2px 0 #4C9434;
-  background-image: -webkit-gradient( linear, left bottom, left top, color-stop(0, #60B842), color-stop(0.85, #7FD13D) );
-  background-image: -moz-linear-gradient( center bottom, #60B842 0%, #7FD13D 85% );
-  color: white;
+li{
+  float: left;
+  width: 100%;
   font-family: arial,helvetica,sans-serif;
   font-size: 17px;
   font-weight: 100;
-  text-shadow: 1px 1px 1px #4C9434;
   border: none;
-  margin: 5px 0;
   text-align: left;
- 
+  padding: 20px 0;
+  border-top: 1px solid #aaaaaa;  
  }
- li img{
-  display: block;
+li a{
+  color:#333333;
   float: left;
-  margin-right: 5%;
-  max-height: 100%;
- }
- li a{
-   color: white;
+  cursor: pointer;
+}
+li a div{
+  float: left;
+  background-color: #333;
+  color: white;
+  padding: 5px;
+  border-radius: 5px;
+  font-size: 11px;
+  letter-spacing: 1px;
+  min-width: 55px;
+  text-align: center;
+}
+ li a h2{
    float: left;
+   padding: 4px 0 4px 20px;
+   font-size: 16px;
  }
  li a.destroy { float: right; margin-right: 5%; text-decoration: none; }
  li a span{

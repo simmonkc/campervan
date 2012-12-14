@@ -1,8 +1,46 @@
 extends layout
 
 block content
+  a.toggle-view(href = '/') Map
+  div.overlay
+    div.close.toggle-view close
+    table.selected-image(align = "center")
+      tr
+        td(align = "center") 
+          img
+      
   ul.image-list
     for image in JSON.parse(images)
       li
-        a(href = image.href, id = image._id)= image.title
-          span= image.createdDate
+        a(href = image.href, id = image._id)
+          div 12:39pm
+          h2= image.title
+  h1.day  Wednesday, Dec 12th, 2012          
+  ul.image-list
+      li
+        a(id = 12346)
+          div 8:42 am
+          h2 Jamming the zone &raquo;
+      li
+        a(id = 12346)
+          div 12:39 pm
+          h2 you like venison? &raquo;
+      li
+        a(id = 12346)
+          div 3:13 pm
+          h2 $200 of groceries &raquo;
+          
+  h1.day  Thursday, Dec 13th, 2012          
+  ul.image-list
+      li
+        a(id = 12345)
+          div 10:06 am
+          h2 Jamming the zone &raquo;
+      li
+        a(id = 12345)
+          div 11:39 am
+          h2 you like venison? &raquo;
+      li
+        a(id = 12345)
+          div 2:17 pm
+          h2 $200 of groceries &raquo;
