@@ -33,6 +33,7 @@ var create = function(filePath, imageTitle, callback) {
       console.log('secretAccessKey: ' + process.env.AWS_SECRET);
       AWS.config.update({ accessKeyId: process.env.AWS_KEY , secretAccessKey: process.env.AWS_SECRET });
       AWS.config.update({ region: 'us-east-1' });
+      AWS.config.update({ sslEnabled : false });
       console.log('AWS.config: ' + JSON.stringify(AWS.config));
       console.log('copying from filePath: ' + filePath);
       fs.readFile(filePath, function(err, data) {
