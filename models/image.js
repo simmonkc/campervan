@@ -51,9 +51,10 @@ var create = function(filePath, imageTitle, callback) {
           console.log('data is available?' + data);
           console.log('or there was an error: ' + err);
           console.log('uploading to S3. Waiting for response from AWS...');
-          s3.client.putObject(data).done(function(resp) {
+          s3.client.putObject(data, function(err, data) {
             // todo: check `resp` to see if an error occurred in the upload
-            console.log(resp)
+            console.log('aws err: ' + JSON.stringify(err));
+            console.log('aws data: ' + JSON.stringify(data));
             image.href = 'http://campervan.s3.amazonaws.com/images/' + image._id + '.jpg';
             image.save(function(err) { callback(err) });
           });
