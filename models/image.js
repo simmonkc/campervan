@@ -28,8 +28,8 @@ var create = function(filePath, imageTitle, callback) {
     image.createdDate = new Date(metadata.exif.dateTimeOriginal);
     image.createdAt = new Date();
     if (process.env.NODE_ENV === 'production') {
-      AWS.config.loadFromPath('amazon-credentials.json');
-      AWS.config.update({region: 'us-east-1'});
+      AWS.config.update({ accessKeyId: process.env.AWS_KEY, secretAccessKey: process.env.AWS_SECRET });
+      AWS.config.update({ region: 'us-east-1' });
       fs.readFile(filePath, function(err, data) {
         if (err) {
           throw new Error(err);
