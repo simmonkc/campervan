@@ -1,7 +1,7 @@
 extends layout
 
 block content
-  a.toggle-view(href = '/list') View All
+  a.toggle-view(href = '/list') All Images
   div#map_canvas
   div.overlay
     div.close.toggle-view close
@@ -18,6 +18,9 @@ block content
         var mapOptions = {
           center: new google.maps.LatLng(-44,170.5),
           zoom: 6,
+          disableDefaultUI: true,
+          panControl: true,
+          zoomControl: true,
           mapTypeId: google.maps.MapTypeId.ROADMAP
         };
         var map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions);
@@ -27,7 +30,7 @@ block content
               position: new google.maps.LatLng(image.lat, image.lng),
               map: map,
               title : image.imageTitle
-              });
+            });
             google.maps.event.addListener(marker,'click', function(){
               $('body').trigger('loadSelectedImage', image.href);
               //loadSelectedImage(image.href);
