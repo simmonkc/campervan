@@ -31,7 +31,7 @@ var create = function(filePath, imageTitle, callback) {
       console.log('application is in production, using AWS...');
       console.log('accessKeyId: ' + process.env.AWS_KEY);
       console.log('secretAccessKey: ' + process.env.AWS_SECRET);
-      AWS.config.update({ accessKeyId: process.env.AWS_KEY, secretAccessKey: process.env.AWS_SECRET });
+      AWS.config.update({ accessKeyId: process.env.AWS_KEY , secretAccessKey: process.env.AWS_SECRET });
       AWS.config.update({ region: 'us-east-1' });
       console.log('copying from filePath: ' + filePath);
       fs.readFile(filePath, function(err, data) {
@@ -43,15 +43,18 @@ var create = function(filePath, imageTitle, callback) {
               Bucket : 'campervan' 
             , Key : 'images/' + image._id + '.jpg'
             , Body : data
+            , ContentType : 'image/jpeg'
             , ACL : 'public-read' 
           };
           console.log('data is available?' + data);
           console.log('or there was an error: ' + err);
+          console.log('AWS.config: ' + AWS.config);
           console.log('uploading to S3. Waiting for response from AWS...');
           s3.client.putObject(data).done(function(resp) {
             // todo: check `resp` to see if an error occurred in the upload
             console.log(resp)
-            callback(null);
+            image.href = 'http://campervan.s3.amazonaws.com/images/' + image._id + '.jpg';
+            image.save(function(err) { callback(err) });
           });
         }
       });
