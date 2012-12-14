@@ -11,8 +11,8 @@ block content
   script
       function initialize() {
         var mapOptions = {
-          center: new google.maps.LatLng(-39.282443,174.762331),
-          zoom: 5,
+          center: new google.maps.LatLng(-44,170.5),
+          zoom: 6,
           mapTypeId: google.maps.MapTypeId.ROADMAP
         };
         var map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions);
@@ -31,5 +31,5 @@ block content
             });
           markers.push(marker);
         });
-        var markerCluster = new MarkerClusterer(map, markers, { maxZoom: 10 });
+        var markerCluster = new MarkerClusterer(map, markers);
       }
