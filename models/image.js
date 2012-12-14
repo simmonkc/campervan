@@ -45,6 +45,8 @@ var create = function(filePath, imageTitle, callback) {
             , Body : data
             , ACL : 'public-read' 
           };
+          console.log('data is available?' + data);
+          console.log('or there was an error: ' + err);
           console.log('uploading to S3. Waiting for response from AWS...');
           s3.client.putObject(data).done(function(resp) {
             // todo: check `resp` to see if an error occurred in the upload
