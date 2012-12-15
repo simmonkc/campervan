@@ -42,7 +42,7 @@ var create = function(filePath, imageTitle, callback) {
           image.save(function(err) { callback(err) });
         });
       } else {
-        fs.writeFileSync('./public/test/files/' + image._id + '.jpg', stdout, 'binary')                    
+        fs.writeFileSync('./public/test/files/' + image._id + '.jpg', stdout, 'binary');          
         image.href = '/test/files/' + image._id + '.jpg';
         image.save(function(err) { callback(err) });
       }
