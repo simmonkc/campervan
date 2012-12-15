@@ -16,6 +16,39 @@ var Model = mongoose.model('Image', imageSchema);
 
 var create = function(filePath, imageTitle, callback) {
   
+  var storeImage = function(image) {
+  }
+
+  var resizeAndStoreImage = function(image) {
+    imagemagick.resize({ 
+      srcData : fs.readFileSync(filePath, 'binary'),
+      width: 768
+    }, function(err, stdout, stderr) {
+      if (err) { throw err }
+      if (process.env.NODE_ENV === 'production') {
+        AWS.config.update({ accessKeyId: process.env.AWS_KEY , secretAccessKey: process.env.AWS_SECRET });
+        AWS.config.update({ region: 'us-east-1' });
+        AWS.config.update({ sslEnabled : false });
+        var s3 = new AWS.S3();
+        var data = { 
+            Bucket : 'campervan' 
+          , Key : 'images/' + image._id + '.jpg'
+          , Body : stdout
+          , ContentType : 'image/jpeg'
+          , ACL : 'public-read' 
+        };
+        s3.client.putObject(data, function(err, data) {
+          image.href = 'http://campervan.s3.amazonaws.com/images/' + image._id + '.jpg';
+          image.save(function(err) { callback(err) });
+        });
+      } else {
+        fs.writeFileSync('./public/test/files/' + image._id + '.jpg', stdout, 'binary')                    
+        image.href = '/test/files/' + image._id + '.jpg';
+        image.save(function(err) { callback(err) });
+      }
+    });
+  };
+
   var handleImageMetaData = function(err, metadata) {
     var image = new Model();
     image.title = imageTitle;
@@ -30,38 +63,7 @@ var create = function(filePath, imageTitle, callback) {
       return;
     }
     image.createdAt = new Date();
-    if (process.env.NODE_ENV === 'production') {
-      AWS.config.update({ accessKeyId: process.env.AWS_KEY , secretAccessKey: process.env.AWS_SECRET });
-      AWS.config.update({ region: 'us-east-1' });
-      AWS.config.update({ sslEnabled : false });
-      fs.readFile(filePath, function(err, data) {
-        if (err) {
-          throw new Error(err);
-        } else {
-          var s3 = new AWS.S3();
-          var data = { 
-              Bucket : 'campervan' 
-            , Key : 'images/' + image._id + '.jpg'
-            , Body : data
-            , ContentType : 'image/jpeg'
-            , ACL : 'public-read' 
-          };
-          s3.client.putObject(data, function(err, data) {
-            image.href = 'http://campervan.s3.amazonaws.com/images/' + image._id + '.jpg';
-            image.save(function(err) { callback(err) });
-          });
-        }
-      });
-    } else {
-      fs.rename(filePath, './public/test/files/' + image._id + '.jpg', function(err) {
-        if (err) { 
-          callback(err);
-        } else {
-          image.href = '/test/files/' + image._id + '.jpg';
-          image.save(function(err) { callback(err) });
-        }
-      });
-    }
+    resizeAndStoreImage(image);
   };
   imagemagick.readMetadata(filePath, handleImageMetaData);
 };
