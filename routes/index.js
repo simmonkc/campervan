@@ -3,7 +3,7 @@ var fs = require('fs')
   , image = require('../models/image');
 
 exports.index = function(req, res) {
-  image.find({}, function(err, images) {
+  image.find({ lat : { $exists : true }}, function(err, images) {
     if (err) throw new Error(err)
     else res.render('index', { title: 'Campervan', images : JSON.stringify(images) });
   });

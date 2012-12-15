@@ -19,13 +19,13 @@ var create = function(filePath, imageTitle, callback) {
   var handleImageMetaData = function(err, metadata) {
     var image = new Model();
     image.title = imageTitle;
-    if (metadata.exif.gpsLatitude === undefined || metadata.exif.gpsLongitude === undefined ) {
-      callback('No GPS metadata');
-      return;
+    if (metadata.exif) {
+      image.createdDate = new Date(metadata.exif.dateTimeOriginal); 
+      if (metadata.exif.gpsLatitude && metadata.exif.gpsLongitude) {
+        image.lat = transformExifGPSData(metadata.exif.gpsLatitude, metadata.exif.gpsLatitudeRef);
+        image.lng = transformExifGPSData(metadata.exif.gpsLongitude, metadata.exif.gpsLongitudeRed);
+      }
     }
-    image.lat = transformExifGPSData(metadata.exif.gpsLatitude, metadata.exif.gpsLatitudeRef);
-    image.lng = transformExifGPSData(metadata.exif.gpsLongitude, metadata.exif.gpsLongitudeRed);
-    image.createdDate = new Date(metadata.exif.dateTimeOriginal);
     image.createdAt = new Date();
     if (process.env.NODE_ENV === 'production') {
       AWS.config.update({ accessKeyId: process.env.AWS_KEY , secretAccessKey: process.env.AWS_SECRET });
@@ -52,12 +52,11 @@ var create = function(filePath, imageTitle, callback) {
     } else {
       fs.rename(filePath, './public/test/files/' + image._id + '.jpg', function(err) {
         if (err) { 
-          throw new Error(err);
+          callback(err);
         } else {
           image.href = '/test/files/' + image._id + '.jpg';
           image.save(function(err) { callback(err) });
         }
-        callback(err);
       });
     }
   };

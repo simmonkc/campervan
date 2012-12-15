@@ -33,7 +33,7 @@ app.get('/', routes.index);
 app.get('/list', routes.list);
 app.get('/admin', routes.admin);
 app.post('/create', routes.create);
-// app.get('/images/:imageId', routes.show);
+app.get('/images/:imageId/', routes.show);
 app.get('/images/:imageId/destroy', routes.destroy);
 
 http.createServer(app).listen(app.get('port'), function(){
