@@ -25,6 +25,9 @@ var create = function(filePath, imageTitle, callback) {
         image.lat = transformExifGPSData(metadata.exif.gpsLatitude, metadata.exif.gpsLatitudeRef);
         image.lng = transformExifGPSData(metadata.exif.gpsLongitude, metadata.exif.gpsLongitudeRed);
       }
+    } else {
+      callback('No EXIF data available.');
+      return;
     }
     image.createdAt = new Date();
     if (process.env.NODE_ENV === 'production') {
