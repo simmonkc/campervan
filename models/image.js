@@ -20,32 +20,36 @@ var create = function(filePath, imageTitle, callback) {
   }
 
   var resizeAndStoreImage = function(image) {
-    imagemagick.resize({ 
-      srcData : fs.readFileSync(filePath, 'binary'),
-      width: 768
-    }, function(err, stdout, stderr) {
-      if (err) { throw err }
-      if (process.env.NODE_ENV === 'production') {
-        AWS.config.update({ accessKeyId: process.env.AWS_KEY , secretAccessKey: process.env.AWS_SECRET });
-        AWS.config.update({ region: 'us-east-1' });
-        AWS.config.update({ sslEnabled : false });
-        var s3 = new AWS.S3();
-        var data = { 
-            Bucket : 'campervan' 
-          , Key : 'images/' + image._id + '.jpg'
-          , Body : stdout
-          , ContentType : 'image/jpeg'
-          , ACL : 'public-read' 
-        };
-        s3.client.putObject(data, function(err, data) {
-          image.href = 'http://campervan.s3.amazonaws.com/images/' + image._id + '.jpg';
+    fs.readFile(filePath, function(err, data) {
+      if (err) throw err;
+      srcData = new Buffer(data, 'binary');
+      imagemagick.resize({ 
+        srcData : srcData,
+        width: 768
+      }, function(err, stdout, stderr) {
+        if (err) { throw err }
+        if (process.env.NODE_ENV === 'production') {
+          AWS.config.update({ accessKeyId: process.env.AWS_KEY , secretAccessKey: process.env.AWS_SECRET });
+          AWS.config.update({ region: 'us-east-1' });
+          AWS.config.update({ sslEnabled : false });
+          var s3 = new AWS.S3();
+          var data = { 
+              Bucket : 'campervan' 
+            , Key : 'images/' + image._id + '.jpg'
+            , Body : new Buffer(stdout, 'binary')
+            , ContentType : 'image/jpeg'
+            , ACL : 'public-read' 
+          };
+          s3.client.putObject(data, function(err, data) {
+            image.href = 'http://campervan.s3.amazonaws.com/images/' + image._id + '.jpg';
+            image.save(function(err) { callback(err) });
+          });
+        } else {
+          fs.writeFileSync('./public/test/files/' + image._id + '.jpg', stdout, 'binary');          
+          image.href = '/test/files/' + image._id + '.jpg';
           image.save(function(err) { callback(err) });
-        });
-      } else {
-        fs.writeFileSync('./public/test/files/' + image._id + '.jpg', stdout, 'binary');          
-        image.href = '/test/files/' + image._id + '.jpg';
-        image.save(function(err) { callback(err) });
-      }
+        }
+      });
     });
   };
 
