@@ -31,7 +31,7 @@ h2{
 }
 .overlay{
   display: none;
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   width: 100%;
@@ -41,11 +41,13 @@ h2{
 }
 .selected-image{
     position: absolute;
-    max-width: 100%;
+    width: 100%;
     height:100%;
 }
 .overlay img{
-    width: 100%;
+    max-width: 100%;
+    height: auto;
+    width:auto;
 }
 .toggle-view {
     position: absolute;
