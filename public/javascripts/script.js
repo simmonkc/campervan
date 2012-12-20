@@ -1,7 +1,9 @@
 $(document).ready(function(){
     
     $('body').on('loadSelectedImage', function(event, href){
-	    var windowHeight = $(window).height();
+	    var windowHeight = $(window).height()-6;
+	    
+	    console.log(windowHeight);
 
       $('.overlay').show();
       $('.selected-image img').attr("src", href).css("max-height", windowHeight);
